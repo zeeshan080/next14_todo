@@ -11,7 +11,7 @@ npm i
 
 ## STEP 00 Create virtual Environment using conda and install
 
-- Open conda prompt and type
+* Open conda prompt and type
 
 ```
 conda create -n fastapinext python=3.11.5
@@ -39,7 +39,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/status")
+@app.get("/api/status")
 def next_app():
     return {"message": "from nextjs api"}
 
@@ -112,7 +112,7 @@ npm run dev
 - Now in a new terminal run this command
 
 ```
-uvicorn --app-dir api index:app --reload
+uvicorn api.index:app --reload
 ```
 
 > This will start you fastapi uvicorn development server at `localhost:8000`
@@ -122,7 +122,7 @@ uvicorn --app-dir api index:app --reload
 ### open a new terminal window write following command
 
 ```
-httpie localhost:8000/status
+http localhost:8000/status
 ```
 
 > OUTPUT
@@ -187,7 +187,7 @@ npm install concurrently
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fast-dev": "uvicorn --app-dir api index:app --reload",
+    "fast-dev": "uvicorn -api.index:app --reload",
     "next-dev": "next dev",
     "dev": "pip install -r requirements.txt concurrently \"npm run next-dev\" \"npm run fast-dev\""
   },
@@ -221,7 +221,14 @@ import os
 
 load_dotenv(find_dotenv())
 engine = create_engine(str(os.getenv("POSTGRES_URL")))
-Session =  sessionmaker(bind=engine)
+# Create a session factory
+SessionLocal = sessionmaker(bind=engine)
+
+# Dependency
+def get_db():
+    with SessionLocal() as session:
+        yield session
+
 ```
 
 ## STEP 08: Creating Tables for the database in ```database/models.py``` file
@@ -296,4 +303,4 @@ alembic init alembic
 python run_migrations.py "created todo and user table"
 ```
 
-* Now your database should have beem created in the noen dashboard
+* Now your database should have been created in the noen dashboard

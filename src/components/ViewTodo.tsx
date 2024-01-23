@@ -15,7 +15,8 @@ export default function ViewTodo({ todo }: Props) {
   const [open, setOpen] = React.useState(false);
 
   const handleDelete = () => {
-    console.log("todo deleted ->     ", todo);
+    console.log("todo deleted ->     ", todo.id);
+    window.location.reload();
   };
   return (
     <Card className="my-2">

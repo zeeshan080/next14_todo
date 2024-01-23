@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import Link from "next/link";
 import { Icons } from "./icons";
 import { Button } from "./ui/button";
@@ -15,8 +15,23 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 export function LoginCard() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    //we need to send back email and password in formdata (username and password)
+    const formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", password);
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0]+ ', '+ pair[1]); 
+    // } 
+    //now we need to send the formdata to the server call the server function here
+  }
   return (
-    <Card>
+    <form onSubmit={onSubmit}>
+      <Card>
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl">Account Login</CardTitle>
         <CardDescription>
@@ -26,11 +41,11 @@ export function LoginCard() {
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" />
+          <Input id="email" type="email" onChange={(e)=>setEmail(e.currentTarget.value)} placeholder="m@example.com" required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" />
+          <Input id="password" type="password" onChange={(e)=>setPassword(e.currentTarget.value)} required/>
           <Link href={"/forgot_password"} className="text-right text-[14px] italic underline">
             Forgot Password?
           </Link>
@@ -63,8 +78,9 @@ export function LoginCard() {
             sign up
           </Link>
         </div>
-        <Button className="tracking-widest w-28">LOGIN</Button>
+        <Button className="tracking-widest w-28" type="submit">LOGIN</Button>
       </CardFooter>
     </Card>
+    </form>
   );
 }

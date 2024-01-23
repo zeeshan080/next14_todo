@@ -31,6 +31,7 @@ export default function EditDialog({ open, onToggle, editTodo }: Props) {
     editTodo.title = title;
     editTodo.completed = complete;
     console.log("todo updated ->     ", editTodo);
+    onToggle(!open);
   };
 
   return (
