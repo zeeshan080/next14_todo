@@ -187,13 +187,13 @@ npm install concurrently
 - Replace scripts at the of your package.json file by the below code
 
 ```
- "scripts": {
+  "scripts": {
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fast-dev": "uvicorn api.index:app --reload",
+    "fastapi-dev": "pip install -r requirements.txt && python -m uvicorn api.index:app --reload",
     "next-dev": "next dev",
-    "dev": "pip install -r requirements.txt concurrently \"npm run next-dev\" \"npm run fast-dev\""
+    "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\""
   },
 ```
 
