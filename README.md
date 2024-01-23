@@ -39,24 +39,28 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+@app.get("/status")
+def uvicorn_app():
+    return {"message": "from uvicorn server"}
+
 @app.get("/api/status")
 def next_app():
-    return {"message": "from nextjs api"}
+    return {"message": "from nextjs server"}
 
 @app.get("/todo")
-def next_app():
+def get_todo():
     return {"message": "all todos"}
 
 @app.post("/todo")
-def next_app(todo):
+def post_todo(todo):
     return {"message": "todo added successfully"}
 
 @app.put("/todo")
-def next_app(todo,todo_id):
+def update_todo(todo,todo_id):
     return {"message": "todo updated successfully"}
 
 @app.delete("/todo")
-def next_app(todo_id):
+def delete_todo(todo_id):
     return {"message": "todo deleted successfully"}
 
 ```
@@ -187,7 +191,7 @@ npm install concurrently
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fast-dev": "uvicorn -api.index:app --reload",
+    "fast-dev": "uvicorn api.index:app --reload",
     "next-dev": "next dev",
     "dev": "pip install -r requirements.txt concurrently \"npm run next-dev\" \"npm run fast-dev\""
   },
@@ -211,7 +215,7 @@ pip install python-dotenv
 3. ```alembic``` for auto migrations
 4. ```python-dotenv``` load env variables
 
-## STEP 07: Create folder ```database/db.py```
+## STEP 07: Create folder ```api/data/db.py```
 * Add the below lines to create connection with you database after you have pasted the connection link in the ```.env``` file in root
 ```
 from sqlalchemy import create_engine
@@ -231,7 +235,7 @@ def get_db():
 
 ```
 
-## STEP 08: Creating Tables for the database in ```database/models.py``` file
+## STEP 08: Creating Tables for the database in ```api/data/models.py``` file
 * Create a models.py file inside the database folder and add the starter code in it
 ```
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -282,7 +286,7 @@ command.upgrade(alembic_cfg, "head")
 ## STEP 10: Creating auto migrations using alembic
 * Run the below command in terminal inside your database folder to create alembic file
 ```
-cd database
+cd data
 alembic init alembic
 ```
 * We need to change few things in the file in other to run auto migrations
